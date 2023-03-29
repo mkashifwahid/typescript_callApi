@@ -20,7 +20,7 @@ function fetchData(api) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('1');
         const response = yield fetch(api);
-        const data = yield response.json();
+        const data, { "product":  } = yield response.json();
         show(data);
     });
 }
@@ -32,14 +32,23 @@ function show(data) {
           <th>Salary</th>
          </tr>`;
     // Loop to access all rows
-    for (let r of data.list) {
+    //   for (let r of data.list) {
+    //     tab += `<tr>
+    //     <td>${r.name} </td>
+    //     <td>${r.office}</td>
+    //     <td>${r.position}</td>
+    //     <td>${r.salary}</td>
+    // </tr>`;
+    //   }
+    data.prdocuts.forEach((r) => {
         tab += `<tr>
-    <td>${r.name} </td>
-    <td>${r.office}</td>
-    <td>${r.position}</td>
-    <td>${r.salary}</td>
-</tr>`;
-    }
+    <td>${r.id} </td>
+    <td>${r.title}</td>
+    <td>${r.description}</td>
+    <td>${r.brand}</td>
+    <td>${r.category}</td>
+    /tr>`;
+    });
     // Setting innerHTML as tab variable
     document.getElementById('apiResponse').innerHTML = tab;
 }

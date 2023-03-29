@@ -19,7 +19,7 @@ button?.addEventListener('click', function () {
 async function fetchData(api: string) {
   console.log('1');
   const response = await fetch(api);
-  const data: Product[] = await response.json();
+  const data = await response.json();
   show(data);
 }
 
@@ -32,14 +32,24 @@ function show(data: Product[]) {
          </tr>`;
 
   // Loop to access all rows
-  for (let r of data.list) {
+  //   for (let r of data.list) {
+  //     tab += `<tr>
+  //     <td>${r.name} </td>
+  //     <td>${r.office}</td>
+  //     <td>${r.position}</td>
+  //     <td>${r.salary}</td>
+  // </tr>`;
+  //   }
+
+  data.forEach((r) => {
     tab += `<tr>
-    <td>${r.name} </td>
-    <td>${r.office}</td>
-    <td>${r.position}</td>
-    <td>${r.salary}</td>
-</tr>`;
-  }
+    <td>${r.id} </td>
+    <td>${r.title}</td>
+    <td>${r.description}</td>
+    <td>${r.brand}</td>
+    <td>${r.category}</td>
+    /tr>`;
+  });
   // Setting innerHTML as tab variable
-  document.getElementById('apiResponse').innerHTML = tab;
+  document.getElementById('apiResponse')!.innerHTML = tab;
 }
