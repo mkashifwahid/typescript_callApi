@@ -20,7 +20,7 @@ function fetchData(api) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('1');
         const response = yield fetch(api);
-        const data, { "product":  } = yield response.json();
+        const data = yield response.json();
         show(data);
     });
 }
@@ -40,7 +40,7 @@ function show(data) {
     //     <td>${r.salary}</td>
     // </tr>`;
     //   }
-    data.prdocuts.forEach((r) => {
+    data.forEach((r) => {
         tab += `<tr>
     <td>${r.id} </td>
     <td>${r.title}</td>
