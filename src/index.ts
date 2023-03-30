@@ -10,36 +10,39 @@ type Product = {
   description: string;
   brand: string;
   category: string;
+  helloworld: string;
 };
+let products: Product[] = [];
 
-button?.addEventListener('click', function () {
-  fetchData(api);
-});
+fetchData(api);
 
 async function fetchData(api: string) {
-  console.log('1');
-  const response = await fetch(api);
-  const data = await response.json();
-  show(data);
+  const response = await fetch('https://dummyjson.com/products')
+    .then((res) => res.json())
+    .catch((error) => {
+      const errorElement = (document
+        .getElementById('apiResponseDiv')!
+        .appendChild(document.createElement('h1')).innerHTML = error.message);
+    });
+
+  const data = await response;
+  products = data.products;
+
+  // Table Show by Inner HTML
+  showDatabyInnerHTML(products);
+  // Table Show by Append Element in DOM
+  showDataByElement(products);
 }
 
-function show(data: Product[]) {
-  let tab = `<tr>
-          <th>Name</th>
-          <th>Office</th>
-          <th>Position</th>
-          <th>Salary</th>
+function showDatabyInnerHTML(data: Product[]) {
+  let tab = `<table>
+          <tr>
+          <th>Id</th>
+          <th>Title</th>
+          <th>Decription</th>
+          <th>Brand</th>
+          <th>Category</th>
          </tr>`;
-
-  // Loop to access all rows
-  //   for (let r of data.list) {
-  //     tab += `<tr>
-  //     <td>${r.name} </td>
-  //     <td>${r.office}</td>
-  //     <td>${r.position}</td>
-  //     <td>${r.salary}</td>
-  // </tr>`;
-  //   }
 
   data.forEach((r) => {
     tab += `<tr>
@@ -48,8 +51,38 @@ function show(data: Product[]) {
     <td>${r.description}</td>
     <td>${r.brand}</td>
     <td>${r.category}</td>
-    /tr>`;
+    </tr>`;
   });
+
+  tab += `</table>`;
+
   // Setting innerHTML as tab variable
-  document.getElementById('apiResponse')!.innerHTML = tab;
+  document.getElementById('apiResponseDiv')!.innerHTML = tab;
+}
+
+function showDataByElement(data: Product[]) {
+  const Header = ['ID', 'TITLE', 'DESCRIPTION', 'BRAND', 'CATEGORY'];
+
+  const table = document.createElement('table');
+  const HeaderRow = table.appendChild(document.createElement('tr'));
+  Header.forEach((h) => {
+    HeaderRow.appendChild(document.createElement('th')).innerHTML = h;
+  });
+
+  data.forEach((r) => {
+    const DataRow = table.appendChild(document.createElement('tr'));
+
+    DataRow.appendChild(document.createElement('td')).innerHTML =
+      r.id.toString();
+    DataRow.appendChild(document.createElement('td')).innerHTML =
+      r.title.toString();
+    DataRow.appendChild(document.createElement('td')).innerHTML =
+      r.description.toString();
+    DataRow.appendChild(document.createElement('td')).innerHTML =
+      r.brand.toString();
+    DataRow.appendChild(document.createElement('td')).innerHTML =
+      r.category.toString();
+  });
+
+  document.getElementById('apiResponseDiv')?.appendChild(table);
 }
